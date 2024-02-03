@@ -28,8 +28,8 @@ public class ThreadPoolInfoController {
         return "index";
     }
 
-    @GetMapping("/page1")
+    @GetMapping("/report")
     public String getThreadPoolInfo() {
-        return "page1";
+        return "report";
     }
 }

@@ -35,7 +35,7 @@ public class MyService {
 ```
 ## Additional info
 I use thymeleaf to create a simple web page to see information that you can access to bye in
-rout and page1.html
+rout and report.html
 ![load image](./report.png "Optional title")
 
 
