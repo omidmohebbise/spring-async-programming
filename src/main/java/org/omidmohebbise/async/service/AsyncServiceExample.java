@@ -28,15 +28,9 @@ public class AsyncServiceExample {
         });
 
 
-        CompletableFuture<String> resultFuture = CompletableFuture.allOf(future1, future2).thenCompose(
-                (result) -> {
-                    return future1.thenCombine(future2, (result1, result2) -> {
-                        return result1 + result2;
-                    });
-                }
+        return CompletableFuture.allOf(future1, future2).thenCompose(
+                (result) -> future1.thenCombine(future2, (result1, result2) -> result1 + result2)
         );
-
-        return resultFuture;
     }
 
 

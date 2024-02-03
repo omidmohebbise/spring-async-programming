@@ -5,7 +5,6 @@ import org.omidmohebbise.async.controller.dto.ThreadPoolInfo;
 import org.omidmohebbise.async.service.AsyncServiceExample;
 import org.springframework.context.ApplicationContext;
 import org.springframework.scheduling.concurrent.ThreadPoolTaskExecutor;
-import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.RestController;
 
@@ -28,7 +27,7 @@ public class AsyncController {
     }
 
     @GetMapping("/executer-info")
-    public ThreadPoolInfo getThreadPoolInfo(Model model) {
+    public ThreadPoolInfo getThreadPoolInfo() {
         ThreadPoolTaskExecutor executor = applicationContext.getBean(ThreadPoolTaskExecutor.class);
 
         int activeThreads = executor.getActiveCount();

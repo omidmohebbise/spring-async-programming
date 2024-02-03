@@ -1,7 +1,6 @@
 package org.omidmohebbise.async.service;
 
 
-import org.springframework.boot.CommandLineRunner;
 import org.springframework.context.ApplicationContext;
 import org.springframework.scheduling.annotation.Scheduled;
 import org.springframework.scheduling.concurrent.ThreadPoolTaskExecutor;
@@ -10,7 +9,6 @@ import org.springframework.stereotype.Service;
 @Service
 public class ServiceConsumer {
 
-    private int callPerSecond = 1;
     private final AsyncServiceExample asyncServiceExample;
     private final ApplicationContext applicationContext;
 
@@ -32,6 +30,7 @@ public class ServiceConsumer {
 
     @Scheduled(fixedRate = 800)
     public void consumer() {
+        int callPerSecond = 1;
         for (int i = 0; i < callPerSecond; i++) {
             asyncServiceExample.asyncMethod();
         }
