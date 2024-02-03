@@ -1,0 +1,16 @@
+<!DOCTYPE html>
+<html xmlns:th="http://www.thymeleaf.org">
+<head>
+    <meta charset="UTF-8">
+    <title>ThreadPool Information</title>
+</head>
+<body>
+<h1>ThreadPool Information</h1>
+<p>Active Threads: <span th:text="${activeThreads}"></span></p>
+<p>Core Pool Size: <span th:text="${corePoolSize}"></span></p>
+<p>Max Pool Size: <span th:text="${maxPoolSize}"></span></p>
+<p>Keep Alive Time: <span th:text="${keepAliveTime}"></span> seconds</p>
+<p>Queue Size: <span th:text="${queueSize}"></span></p>
+<p>Queue Capacity: <span th:text="${queueCapacity}"></span></p>
+</body>
+</html>

@@ -1,0 +1,118 @@
+<!DOCTYPE html>
+<html xmlns:th="http://www.thymeleaf.org">
+<head>
+    <meta charset="UTF-8">
+    <title>ThreadPool Information</title>
+    <script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
+</head>
+<body>
+<h1>ThreadPool Information - Line Chart</h1>
+<canvas id="lineChart" width="800" height="400"></canvas>
+
+<script th:inline="javascript">
+    var dataTime = []; // Array to store ThreadPool information
+
+    // Function to create the Chart.js chart
+    var myChart;
+
+    // Function to update the chart data
+    function updateChartData(newData) {
+        // Update the chart with new data
+        myChart.data.datasets[0].data = newData.map(item => item.activeThreads); // Update data
+        myChart.data.labels = newData.map(item => item.time); // Update labels
+        myChart.update(); // Update the chart
+    }
+
+    // Function to fetch ThreadPool information
+    function fetchData() {
+        var xhr = new XMLHttpRequest();
+        xhr.open('GET', '/executer-info', true);
+
+        xhr.onreadystatechange = function () {
+            if (xhr.readyState === 4 && xhr.status === 200) {
+                var data = JSON.parse(xhr.responseText);
+
+                // Add new ThreadPool information to the array
+                dataTime.push({
+                    time: new Date().toISOString(),
+                    activeThreads: data.activeThreads
+                    // Add other data to the array if needed
+                });
+
+                // Update chart data
+                updateChartData(dataTime);
+
+                // Update other elements with ThreadPool information
+                document.getElementById('activeThreads').innerText = data.activeThreads;
+                document.getElementById('corePoolSize').innerText = data.corePoolSize;
+                document.getElementById('maxPoolSize').innerText = data.maxPoolSize;
+                document.getElementById('keepAliveTime').innerText = data.keepAliveTime;
+                document.getElementById('queueSize').innerText = data.queueSize;
+                document.getElementById('queueCapacity').innerText = data.queueCapacity;
+            }
+        };
+
+        xhr.send();
+    }
+
+    // Auto-refresh data every 1 second
+    setInterval(fetchData, 1000);
+
+    // Initial setup of the chart
+    document.addEventListener('DOMContentLoaded', function () {
+        var ctx = document.getElementById('lineChart').getContext('2d');
+        myChart = new Chart(ctx, {
+            type: 'line',
+            data: {
+                labels: [],
+                datasets: [{
+                    label: 'Active Threads',
+                    data: [],
+                    borderColor: 'blue',
+                    borderWidth: 1,
+                    fill: false
+                }]
+            },
+            options: {
+                responsive: true,
+                title: {
+                    display: true,
+                    text: 'ThreadPool Information'
+                },
+                scales: {
+                    xAxes: [{
+                        type: 'time',
+                        time: {
+                            displayFormats: {
+                                second: 'h:mm'
+                            }
+                        },
+                        scaleLabel: {
+                            display: true,
+                            labelString: 'Time'
+                        }
+                    }],
+                    yAxes: [{
+                        scaleLabel: {
+                            display: true,
+                            labelString: 'Value'
+                        },
+                        ticks: {
+                            max: 100
+                        }
+                    }]
+                }
+            }
+        });
+    });
+</script>
+
+<h2>ThreadPool Information</h2>
+<p>Active Threads: <span id="activeThreads"></span></p>
+<p>Core Pool Size: <span id="corePoolSize"></span></p>
+<p>Max Pool Size: <span id="maxPoolSize"></span></p>
+<p>Keep Alive Time: <span id="keepAliveTime"></span> seconds</p>
+<p>Queue Size: <span id="queueSize"></span></p>
+<p>Queue Capacity: <span id="queueCapacity"></span></p>
+</body>
+</html>
